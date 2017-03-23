@@ -174,5 +174,10 @@ namespace enti_api
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateShopItem", iDParameter, titleParameter, descriptionParameter, priceParameter, discountParameter, imageSrcParameter, quantityParameter, categoryIdParameter);
         }
+    
+        public virtual ObjectResult<SelectCustomers_Result> SelectCustomers()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SelectCustomers_Result>("SelectCustomers");
+        }
     }
 }

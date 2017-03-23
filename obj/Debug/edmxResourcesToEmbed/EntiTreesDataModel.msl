@@ -151,5 +151,16 @@
     </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="UpdateOrder" FunctionName="EntiTreesModel.Store.UpdateOrder" />
     <FunctionImportMapping FunctionImportName="UpdateShopItem" FunctionName="EntiTreesModel.Store.UpdateShopItem" />
+    <FunctionImportMapping FunctionImportName="SelectCustomers" FunctionName="EntiTreesModel.Store.SelectCustomers">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="EntiTreesModel.SelectCustomers_Result">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping>

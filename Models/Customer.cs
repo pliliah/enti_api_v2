@@ -12,5 +12,7 @@ namespace enti_api.Models
         public string phone { get; set; }
         public string address { get; set; }
         public string message { get; set; }
+        public int id { get; set; }
+        public int ordersCount { get; set; }
     }
 }

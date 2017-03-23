@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="EntiTreesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="EntiTreesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Category">
           <Key>
             <PropertyRef Name="Id" />
@@ -91,6 +91,7 @@
           <Parameter Name="CategoryId" Type="int" Mode="In" />
         </Function>
         <Function Name="SelectCategories" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="SelectCustomers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="SelectOrderByID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="OrderID" Type="int" Mode="In" />
         </Function>
@@ -127,8 +128,7 @@
             <End Role="ShoppingItem" EntitySet="ShoppingItem" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="EntiTreesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -215,10 +215,10 @@
             <End Role="ShoppingItem" EntitySet="ShoppingItems" />
           </AssociationSet>
           <FunctionImport Name="DeleteShopItem">
-            <Parameter Name="ID" Mode="In" Type="Int32" />
+          <Parameter Name="ID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="InsertNewOrder" ReturnType="Collection(EntiTreesModel.InsertNewOrder_Result)">
-            <Parameter Name="InXML" Mode="In" Type="String" />
+          <Parameter Name="InXML" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="InsertNewShopItem">
             <Parameter Name="Title" Mode="In" Type="String" />
@@ -231,10 +231,10 @@
           </FunctionImport>
           <FunctionImport Name="SelectCategories" ReturnType="Collection(EntiTreesModel.SelectCategories_Result)" />
           <FunctionImport Name="SelectOrderByID" ReturnType="Collection(EntiTreesModel.SelectOrderByID_Result)">
-            <Parameter Name="OrderID" Mode="In" Type="Int32" />
+          <Parameter Name="OrderID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SelectOrderItemsByOrderID" ReturnType="Collection(EntiTreesModel.SelectOrderItemsByOrderID_Result)">
-            <Parameter Name="OrderID" Mode="In" Type="Int32" />
+          <Parameter Name="OrderID" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SelectOrders" ReturnType="Collection(EntiTreesModel.SelectOrders_Result)" />
           <FunctionImport Name="SelectShoppingItems" ReturnType="Collection(EntiTreesModel.SelectShoppingItems_Result)">
@@ -255,6 +255,7 @@
             <Parameter Name="Quantity" Mode="In" Type="Int32" />
             <Parameter Name="CategoryId" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="SelectCustomers" ReturnType="Collection(EntiTreesModel.SelectCustomers_Result)" />
         </EntityContainer>
         <ComplexType Name="InsertNewOrder_Result">
           <Property Type="String" Name="ResultMessage" Nullable="false" MaxLength="27" />
@@ -315,6 +316,14 @@
           <Property Type="String" Name="ImageSrc" Nullable="true" MaxLength="150" />
           <Property Type="Int32" Name="Quantity" Nullable="false" />
           <Property Type="Int32" Name="CategoryId" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="SelectCustomers_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Phone" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Address" Nullable="false" MaxLength="200" />
+          <Property Type="Int32" Name="OrdersCount" Nullable="false" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -472,6 +481,17 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="UpdateOrder" FunctionName="EntiTreesModel.Store.UpdateOrder" />
           <FunctionImportMapping FunctionImportName="UpdateShopItem" FunctionName="EntiTreesModel.Store.UpdateShopItem" />
+          <FunctionImportMapping FunctionImportName="SelectCustomers" FunctionName="EntiTreesModel.Store.SelectCustomers">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EntiTreesModel.SelectCustomers_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

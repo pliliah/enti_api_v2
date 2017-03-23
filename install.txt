@@ -1,0 +1,11 @@
+﻿Minification with require.js
+npm install -g requirejs  --инсталира се глобално така
+
+Във главната директория на ангулърския сайт се изпълнява следната команда:
+
+sudo r.js -o build.config.js - под мак ос
+r.js.cmd -o build.config.js - под уиндоус
+
+
+За билдване на css-a:
+r.js.cmd -o build.css.config.js
