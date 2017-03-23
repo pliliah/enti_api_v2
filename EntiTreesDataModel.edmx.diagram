@@ -11,6 +11,7 @@
         <EntityTypeShape EntityType="EntiTreesModel.ShoppingCart" Width="1.5" PointX="2.75" PointY="5.75" IsExpanded="true" />
         <EntityTypeShape EntityType="EntiTreesModel.ShoppingItem" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
         <AssociationConnector Association="EntiTreesModel.FK_ShoppingItem_Category" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="EntiTreesModel.Contact" Width="1.5" PointX="5.375" PointY="4.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -32,6 +32,7 @@ namespace enti_api
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public virtual DbSet<ShoppingItem> ShoppingItems { get; set; }
+        public virtual DbSet<Contact> Contacts { get; set; }
     
         public virtual int DeleteShopItem(Nullable<int> iD)
         {
@@ -178,6 +179,27 @@ namespace enti_api
         public virtual ObjectResult<SelectCustomers_Result> SelectCustomers()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SelectCustomers_Result>("SelectCustomers");
+        }
+    
+        public virtual int InsertContact(string name, string email, string phone, string message)
+        {
+            var nameParameter = name != null ?
+                new ObjectParameter("Name", name) :
+                new ObjectParameter("Name", typeof(string));
+    
+            var emailParameter = email != null ?
+                new ObjectParameter("Email", email) :
+                new ObjectParameter("Email", typeof(string));
+    
+            var phoneParameter = phone != null ?
+                new ObjectParameter("Phone", phone) :
+                new ObjectParameter("Phone", typeof(string));
+    
+            var messageParameter = message != null ?
+                new ObjectParameter("Message", message) :
+                new ObjectParameter("Message", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("InsertContact", nameParameter, emailParameter, phoneParameter, messageParameter);
         }
     }
 }

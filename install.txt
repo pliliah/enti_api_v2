@@ -6,6 +6,15 @@ npm install -g requirejs  --инсталира се глобално така
 sudo r.js -o build.config.js - под мак ос
 r.js.cmd -o build.config.js - под уиндоус
 
+-----------------------------------
 
 За билдване на css-a:
 r.js.cmd -o build.css.config.js
+
+
+-----------------------------------
+https://console.developers.google.com/apis/credentials?project=trusty-pixel-162413
+Google Api Key for maps
+
+To secure the api key: https://support.google.com/googleapi/answer/6310037
+Other options for the map: https://developers.google.com/maps/documentation/javascript/reference#MapOptions

@@ -959,3 +959,52 @@ BEGIN
 	ORDER BY c.Id DESC
 END
 GO
+
+
+/****** Object:  Table [dbo].[Contacts]    Script Date: 3/23/17 16:10:14 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Contacts](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](100) NOT NULL,
+	[Email] [nvarchar](100) NOT NULL,
+	[Phone] [nvarchar](20) NULL,
+	[Message] [nvarchar](500) NOT NULL
+) ON [PRIMARY]
+
+GO
+
+-- =============================================
+-- Author:		Lilia Hristova
+-- Create date: 23 Mar 2017
+-- Description:	Insert new contact message in the DB
+-- =============================================
+CREATE PROCEDURE [dbo].[InsertContact] 
+	-- Add the parameters for the stored procedure here
+	@Name nvarchar(100),
+	@Email nvarchar(100),
+	@Phone nvarchar(20),
+	@Message nvarchar(500)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    INSERT INTO [dbo].[Contacts]
+           ([Name]
+           ,[Email]
+           ,[Phone]
+           ,[Message])
+     VALUES
+           (@Name
+           ,@Email
+           ,@Phone
+           ,@Message)
+END
+
+GO

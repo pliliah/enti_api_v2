@@ -95,7 +95,11 @@
     <Compile Include="Code\Authentication.cs" />
     <Compile Include="Code\BasicAuthenticationAttribute.cs" />
     <Compile Include="Code\Utils.cs" />
+    <Compile Include="Contact.cs">
+      <DependentUpon>EntiTreesDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\CategoriesController.cs" />
+    <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
@@ -125,6 +129,7 @@
       <DependentUpon>EntiTreesDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\Contact.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Login.cs" />
     <Compile Include="Models\Order.cs" />

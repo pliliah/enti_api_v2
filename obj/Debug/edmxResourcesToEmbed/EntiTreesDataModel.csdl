@@ -124,6 +124,13 @@
       <Parameter Name="CategoryId" Mode="In" Type="Int32" />
     </FunctionImport>
     <FunctionImport Name="SelectCustomers" ReturnType="Collection(EntiTreesModel.SelectCustomers_Result)" />
+    <EntitySet Name="Contacts" EntityType="EntiTreesModel.Contact" />
+    <FunctionImport Name="InsertContact">
+      <Parameter Name="Name" Mode="In" Type="String" />
+      <Parameter Name="Email" Mode="In" Type="String" />
+      <Parameter Name="Phone" Mode="In" Type="String" />
+      <Parameter Name="Message" Mode="In" Type="String" />
+    </FunctionImport>
   </EntityContainer>
   <ComplexType Name="InsertNewOrder_Result">
     <Property Type="String" Name="ResultMessage" Nullable="false" MaxLength="27" />
@@ -193,4 +200,17 @@
     <Property Type="String" Name="Address" Nullable="false" MaxLength="200" />
     <Property Type="Int32" Name="OrdersCount" Nullable="false" />
   </ComplexType>
+  <EntityType Name="Contact">
+    <Key>
+      <PropertyRef Name="Id" />
+      <PropertyRef Name="Name" />
+      <PropertyRef Name="Email" />
+      <PropertyRef Name="Message" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Message" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+  </EntityType>
 </Schema>

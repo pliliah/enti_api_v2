@@ -16,6 +16,21 @@
           <Property Name="Src" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ImgSrc" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EntiTrees.dbo.Contacts' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Contacts">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Email" />
+            <PropertyRef Name="Message" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="20" />
+          <Property Name="Message" Type="nvarchar" MaxLength="500" Nullable="false" />
+        </EntityType>
         <EntityType Name="Customer">
           <Key>
             <PropertyRef Name="Id" />
@@ -78,6 +93,12 @@
         <Function Name="DeleteShopItem" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ID" Type="int" Mode="In" />
         </Function>
+        <Function Name="InsertContact" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Name" Type="nvarchar" Mode="In" />
+          <Parameter Name="Email" Type="nvarchar" Mode="In" />
+          <Parameter Name="Phone" Type="nvarchar" Mode="In" />
+          <Parameter Name="Message" Type="nvarchar" Mode="In" />
+        </Function>
         <Function Name="InsertNewOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="InXML" Type="xml" Mode="In" />
         </Function>
@@ -123,6 +144,15 @@
           <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ShoppingCart" EntityType="Self.ShoppingCart" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ShoppingItem" EntityType="Self.ShoppingItem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Contacts" EntityType="Self.Contacts" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Contacts].[Id] AS [Id], 
+    [Contacts].[Name] AS [Name], 
+    [Contacts].[Email] AS [Email], 
+    [Contacts].[Phone] AS [Phone], 
+    [Contacts].[Message] AS [Message]
+    FROM [dbo].[Contacts] AS [Contacts]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_ShoppingItem_Category" Association="Self.FK_ShoppingItem_Category">
             <End Role="Category" EntitySet="Category" />
             <End Role="ShoppingItem" EntitySet="ShoppingItem" />
@@ -256,6 +286,13 @@
             <Parameter Name="CategoryId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="SelectCustomers" ReturnType="Collection(EntiTreesModel.SelectCustomers_Result)" />
+          <EntitySet Name="Contacts" EntityType="EntiTreesModel.Contact" />
+          <FunctionImport Name="InsertContact">
+            <Parameter Name="Name" Mode="In" Type="String" />
+            <Parameter Name="Email" Mode="In" Type="String" />
+            <Parameter Name="Phone" Mode="In" Type="String" />
+            <Parameter Name="Message" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="InsertNewOrder_Result">
           <Property Type="String" Name="ResultMessage" Nullable="false" MaxLength="27" />
@@ -325,6 +362,19 @@
           <Property Type="String" Name="Address" Nullable="false" MaxLength="200" />
           <Property Type="Int32" Name="OrdersCount" Nullable="false" />
         </ComplexType>
+        <EntityType Name="Contact">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Email" />
+            <PropertyRef Name="Message" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -492,6 +542,18 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="Contacts">
+            <EntityTypeMapping TypeName="EntiTreesModel.Contact">
+              <MappingFragment StoreEntitySet="Contacts">
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="InsertContact" FunctionName="EntiTreesModel.Store.InsertContact" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
