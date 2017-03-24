@@ -201,5 +201,27 @@ namespace enti_api
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("InsertContact", nameParameter, emailParameter, phoneParameter, messageParameter);
         }
+    
+        public virtual ObjectResult<SelectContacts_Result> SelectContacts()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SelectContacts_Result>("SelectContacts");
+        }
+    
+        public virtual int UpdateContact(Nullable<int> contactId, Nullable<bool> isCompleted, string answer)
+        {
+            var contactIdParameter = contactId.HasValue ?
+                new ObjectParameter("ContactId", contactId) :
+                new ObjectParameter("ContactId", typeof(int));
+    
+            var isCompletedParameter = isCompleted.HasValue ?
+                new ObjectParameter("IsCompleted", isCompleted) :
+                new ObjectParameter("IsCompleted", typeof(bool));
+    
+            var answerParameter = answer != null ?
+                new ObjectParameter("Answer", answer) :
+                new ObjectParameter("Answer", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateContact", contactIdParameter, isCompletedParameter, answerParameter);
+        }
     }
 }

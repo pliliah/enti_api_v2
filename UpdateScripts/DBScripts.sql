@@ -973,8 +973,20 @@ CREATE TABLE [dbo].[Contacts](
 	[Name] [nvarchar](100) NOT NULL,
 	[Email] [nvarchar](100) NOT NULL,
 	[Phone] [nvarchar](20) NULL,
-	[Message] [nvarchar](500) NOT NULL
+	[Message] [nvarchar](500) NOT NULL,
+	[IsCompleted] [bit] NULL CONSTRAINT [DF_Contacts_IsCompleted]  DEFAULT ((0)),
+	[Date] [datetime] NOT NULL CONSTRAINT [DF_Contacts_Date]  DEFAULT (getdate()),
+	[DateCompleted] [datetime] NULL,
+	[Answer] [nvarchar](500) NULL
 ) ON [PRIMARY]
+
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'The date when the contact is inserted' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Contacts', @level2type=N'COLUMN',@level2name=N'Date'
+GO
+
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'The date when we send back the response.' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Contacts', @level2type=N'COLUMN',@level2name=N'DateCompleted'
+GO
 
 GO
 
@@ -1007,4 +1019,64 @@ BEGIN
            ,@Message)
 END
 
+GO
+
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Lilia Hristova
+-- Create date: 24 Mar 2017
+-- Description:	Selects all contacts
+-- =============================================
+CREATE PROCEDURE SelectContacts 
+	
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    SELECT [Id]
+      ,[Name]
+      ,[Email]
+      ,[Phone]
+      ,[Message]
+      ,[IsCompleted]
+      ,[Date]
+      ,[DateCompleted]
+	  ,[Answer]
+    FROM [EntiTrees].[dbo].[Contacts]
+    ORDER BY [IsCompleted] ASC, [Date] ASC
+END
+GO
+
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Lilia Hristova
+-- Create date: 24 Mar 2017
+-- Description:	Updates the contact to completed
+-- =============================================
+CREATE PROCEDURE UpdateContact
+	@ContactId INT,
+	@IsCompleted BIT,
+	@Answer NVARCHAR(500) = ''
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    UPDATE [dbo].[Contacts]
+   SET [IsCompleted] = @IsCompleted,
+	   [DateCompleted] = CASE WHEN @IsCompleted = '1' THEN GETDATE() ELSE NULL END,
+	   [Answer] = @Answer
+ WHERE Id = @ContactId
+END
 GO

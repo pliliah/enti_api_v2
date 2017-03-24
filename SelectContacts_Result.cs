@@ -10,9 +10,8 @@
 namespace enti_api
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class Contact
+    public partial class SelectContacts_Result
     {
         public int Id { get; set; }
         public string Name { get; set; }

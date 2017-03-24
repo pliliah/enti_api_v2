@@ -19,12 +19,17 @@ warning 6002: The table/view 'EntiTrees.dbo.Contacts' does not have a primary ke
       <PropertyRef Name="Name" />
       <PropertyRef Name="Email" />
       <PropertyRef Name="Message" />
+      <PropertyRef Name="Date" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="Phone" Type="nvarchar" MaxLength="20" />
     <Property Name="Message" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="IsCompleted" Type="bit" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="DateCompleted" Type="datetime" />
+    <Property Name="Answer" Type="nvarchar" MaxLength="500" />
   </EntityType>
   <EntityType Name="Customer">
     <Key>
@@ -107,6 +112,7 @@ warning 6002: The table/view 'EntiTrees.dbo.Contacts' does not have a primary ke
     <Parameter Name="CategoryId" Type="int" Mode="In" />
   </Function>
   <Function Name="SelectCategories" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="SelectContacts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <Function Name="SelectCustomers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <Function Name="SelectOrderByID" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="OrderID" Type="int" Mode="In" />
@@ -118,6 +124,11 @@ warning 6002: The table/view 'EntiTrees.dbo.Contacts' does not have a primary ke
   <Function Name="SelectShoppingItems" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="CategoryID" Type="int" Mode="In" />
     <Parameter Name="ItemID" Type="int" Mode="In" />
+  </Function>
+  <Function Name="UpdateContact" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="ContactId" Type="int" Mode="In" />
+    <Parameter Name="IsCompleted" Type="bit" Mode="In" />
+    <Parameter Name="Answer" Type="nvarchar" Mode="In" />
   </Function>
   <Function Name="UpdateOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="OrderID" Type="int" Mode="In" />
@@ -145,7 +156,11 @@ warning 6002: The table/view 'EntiTrees.dbo.Contacts' does not have a primary ke
     [Contacts].[Name] AS [Name], 
     [Contacts].[Email] AS [Email], 
     [Contacts].[Phone] AS [Phone], 
-    [Contacts].[Message] AS [Message]
+    [Contacts].[Message] AS [Message], 
+    [Contacts].[IsCompleted] AS [IsCompleted], 
+    [Contacts].[Date] AS [Date], 
+    [Contacts].[DateCompleted] AS [DateCompleted], 
+    [Contacts].[Answer] AS [Answer]
     FROM [dbo].[Contacts] AS [Contacts]</DefiningQuery>
     </EntitySet>
     <AssociationSet Name="FK_ShoppingItem_Category" Association="Self.FK_ShoppingItem_Category">

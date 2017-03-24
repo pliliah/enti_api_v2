@@ -131,6 +131,12 @@
       <Parameter Name="Phone" Mode="In" Type="String" />
       <Parameter Name="Message" Mode="In" Type="String" />
     </FunctionImport>
+    <FunctionImport Name="SelectContacts" ReturnType="Collection(EntiTreesModel.SelectContacts_Result)" />
+    <FunctionImport Name="UpdateContact">
+      <Parameter Name="ContactId" Mode="In" Type="Int32" />
+      <Parameter Name="IsCompleted" Mode="In" Type="Boolean" />
+      <Parameter Name="Answer" Mode="In" Type="String" />
+    </FunctionImport>
   </EntityContainer>
   <ComplexType Name="InsertNewOrder_Result">
     <Property Type="String" Name="ResultMessage" Nullable="false" MaxLength="27" />
@@ -206,11 +212,27 @@
       <PropertyRef Name="Name" />
       <PropertyRef Name="Email" />
       <PropertyRef Name="Message" />
+      <PropertyRef Name="Date" />
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
     <Property Name="Message" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="IsCompleted" Type="Boolean" />
+    <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="DateCompleted" Type="DateTime" Precision="3" />
+    <Property Name="Answer" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
   </EntityType>
+  <ComplexType Name="SelectContacts_Result">
+    <Property Type="Int32" Name="Id" Nullable="false" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="Email" Nullable="false" MaxLength="100" />
+    <Property Type="String" Name="Phone" Nullable="true" MaxLength="20" />
+    <Property Type="String" Name="Message" Nullable="false" MaxLength="500" />
+    <Property Type="Boolean" Name="IsCompleted" Nullable="true" />
+    <Property Type="DateTime" Name="Date" Nullable="false" Precision="23" />
+    <Property Type="DateTime" Name="DateCompleted" Nullable="true" Precision="23" />
+    <Property Type="String" Name="Answer" Nullable="true" MaxLength="500" />
+  </ComplexType>
 </Schema>

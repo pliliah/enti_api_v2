@@ -142,6 +142,9 @@
     <Compile Include="SelectCategories_Result.cs">
       <DependentUpon>EntiTreesDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="SelectContacts_Result.cs">
+      <DependentUpon>EntiTreesDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="SelectCustomers_Result.cs">
       <DependentUpon>EntiTreesDataModel.tt</DependentUpon>
     </Compile>
