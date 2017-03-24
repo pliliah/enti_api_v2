@@ -223,5 +223,10 @@ namespace enti_api
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("UpdateContact", contactIdParameter, isCompletedParameter, answerParameter);
         }
+    
+        public virtual ObjectResult<SelectAdminHomeNotifications_Result> SelectAdminHomeNotifications()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SelectAdminHomeNotifications_Result>("SelectAdminHomeNotifications");
+        }
     }
 }

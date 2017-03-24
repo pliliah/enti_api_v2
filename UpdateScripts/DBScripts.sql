@@ -1080,3 +1080,33 @@ BEGIN
  WHERE Id = @ContactId
 END
 GO
+
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Lilia Hristova
+-- Create date: 24 Mar 2017
+-- Description:	Selects the notifications for the home page of the admin section
+-- =============================================
+CREATE PROCEDURE SelectAdminHomeNotifications 
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    SELECT
+	(SELECT COUNT(Id) FROM [dbo].[ShoppingItem] WHERE IsDeleted = 0 AND Quantity > 0) AS 'ActiveItems',
+	(SELECT COUNT(Id) FROM [dbo].[ShoppingItem] WHERE IsDeleted = 0) AS 'AllItems',
+	(SELECT COUNT(Id) FROM [dbo].[Order] WHERE IsCompleted = 0) AS 'OpenOrders',
+	(SELECT COUNT(Id) FROM [dbo].[Order]) AS 'AllOrders',
+	(SELECT COUNT(Email) FROM [dbo].[Customer]) AS 'CustomersCount',
+	(SELECT COUNT([Id]) FROM [dbo].[Contacts] WHERE IsCompleted = 0) AS 'OpenContacts',
+	(SELECT COUNT([Id]) FROM [dbo].[Contacts]) AS 'AllContacts'
+
+ 
+END
+GO

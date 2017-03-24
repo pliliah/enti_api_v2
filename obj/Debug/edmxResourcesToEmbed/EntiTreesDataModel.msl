@@ -193,5 +193,18 @@
       </ResultMapping>
     </FunctionImportMapping>
     <FunctionImportMapping FunctionImportName="UpdateContact" FunctionName="EntiTreesModel.Store.UpdateContact" />
+    <FunctionImportMapping FunctionImportName="SelectAdminHomeNotifications" FunctionName="EntiTreesModel.Store.SelectAdminHomeNotifications">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="EntiTreesModel.SelectAdminHomeNotifications_Result">
+          <ScalarProperty Name="ActiveItems" ColumnName="ActiveItems" />
+          <ScalarProperty Name="AllItems" ColumnName="AllItems" />
+          <ScalarProperty Name="OpenOrders" ColumnName="OpenOrders" />
+          <ScalarProperty Name="AllOrders" ColumnName="AllOrders" />
+          <ScalarProperty Name="CustomersCount" ColumnName="CustomersCount" />
+          <ScalarProperty Name="OpenContacts" ColumnName="OpenContacts" />
+          <ScalarProperty Name="AllContacts" ColumnName="AllContacts" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping>

@@ -116,6 +116,7 @@ warning 6002: The table/view 'EntiTrees.dbo.Contacts' does not have a primary ke
           <Parameter Name="Quantity" Type="int" Mode="In" />
           <Parameter Name="CategoryId" Type="int" Mode="In" />
         </Function>
+        <Function Name="SelectAdminHomeNotifications" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="SelectCategories" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="SelectContacts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="SelectCustomers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
@@ -314,6 +315,7 @@ warning 6002: The table/view 'EntiTrees.dbo.Contacts' does not have a primary ke
             <Parameter Name="IsCompleted" Mode="In" Type="Boolean" />
             <Parameter Name="Answer" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="SelectAdminHomeNotifications" ReturnType="Collection(EntiTreesModel.SelectAdminHomeNotifications_Result)" />
         </EntityContainer>
         <ComplexType Name="InsertNewOrder_Result">
           <Property Type="String" Name="ResultMessage" Nullable="false" MaxLength="27" />
@@ -411,6 +413,15 @@ warning 6002: The table/view 'EntiTrees.dbo.Contacts' does not have a primary ke
           <Property Type="DateTime" Name="Date" Nullable="false" Precision="23" />
           <Property Type="DateTime" Name="DateCompleted" Nullable="true" Precision="23" />
           <Property Type="String" Name="Answer" Nullable="true" MaxLength="500" />
+        </ComplexType>
+        <ComplexType Name="SelectAdminHomeNotifications_Result">
+          <Property Type="Int32" Name="ActiveItems" Nullable="true" />
+          <Property Type="Int32" Name="AllItems" Nullable="true" />
+          <Property Type="Int32" Name="OpenOrders" Nullable="true" />
+          <Property Type="Int32" Name="AllOrders" Nullable="true" />
+          <Property Type="Int32" Name="CustomersCount" Nullable="true" />
+          <Property Type="Int32" Name="OpenContacts" Nullable="true" />
+          <Property Type="Int32" Name="AllContacts" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -610,6 +621,19 @@ warning 6002: The table/view 'EntiTrees.dbo.Contacts' does not have a primary ke
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="UpdateContact" FunctionName="EntiTreesModel.Store.UpdateContact" />
+          <FunctionImportMapping FunctionImportName="SelectAdminHomeNotifications" FunctionName="EntiTreesModel.Store.SelectAdminHomeNotifications">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EntiTreesModel.SelectAdminHomeNotifications_Result">
+                <ScalarProperty Name="ActiveItems" ColumnName="ActiveItems" />
+                <ScalarProperty Name="AllItems" ColumnName="AllItems" />
+                <ScalarProperty Name="OpenOrders" ColumnName="OpenOrders" />
+                <ScalarProperty Name="AllOrders" ColumnName="AllOrders" />
+                <ScalarProperty Name="CustomersCount" ColumnName="CustomersCount" />
+                <ScalarProperty Name="OpenContacts" ColumnName="OpenContacts" />
+                <ScalarProperty Name="AllContacts" ColumnName="AllContacts" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

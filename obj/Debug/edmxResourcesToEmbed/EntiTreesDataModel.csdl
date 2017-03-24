@@ -137,6 +137,7 @@
       <Parameter Name="IsCompleted" Mode="In" Type="Boolean" />
       <Parameter Name="Answer" Mode="In" Type="String" />
     </FunctionImport>
+    <FunctionImport Name="SelectAdminHomeNotifications" ReturnType="Collection(EntiTreesModel.SelectAdminHomeNotifications_Result)" />
   </EntityContainer>
   <ComplexType Name="InsertNewOrder_Result">
     <Property Type="String" Name="ResultMessage" Nullable="false" MaxLength="27" />
@@ -234,5 +235,14 @@
     <Property Type="DateTime" Name="Date" Nullable="false" Precision="23" />
     <Property Type="DateTime" Name="DateCompleted" Nullable="true" Precision="23" />
     <Property Type="String" Name="Answer" Nullable="true" MaxLength="500" />
+  </ComplexType>
+  <ComplexType Name="SelectAdminHomeNotifications_Result">
+    <Property Type="Int32" Name="ActiveItems" Nullable="true" />
+    <Property Type="Int32" Name="AllItems" Nullable="true" />
+    <Property Type="Int32" Name="OpenOrders" Nullable="true" />
+    <Property Type="Int32" Name="AllOrders" Nullable="true" />
+    <Property Type="Int32" Name="CustomersCount" Nullable="true" />
+    <Property Type="Int32" Name="OpenContacts" Nullable="true" />
+    <Property Type="Int32" Name="AllContacts" Nullable="true" />
   </ComplexType>
 </Schema>
