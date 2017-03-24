@@ -119,7 +119,7 @@ namespace enti_api.Controllers
                         //if the order is successfull
                         Models.Codes code = (Models.Codes)Enum.Parse(typeof(Models.Codes), item.Result);
                         returnVal = new Models.ReturnValue<string>(code, item.ResultMessage);
-                        Utils.SendMail("ПОРЪЧКА #" + item.OrderID.ToString() + ": Нова поръчка е изпратена успешно!", GenerateOrderEmailBody(order, item.OrderID.ToString()), order.customer.email, order.customer.name);
+                        Utils.SendMail("ПОТВЪРДЕНА ПОРЪЧКА #" + item.OrderID.ToString() + ": Нова поръчка е изпратена успешно!", GenerateOrderEmailBody(order, item.OrderID.ToString()), order.customer.email, order.customer.name);
                         return returnVal;
                     }
                     return new Models.ReturnValue<string>(Models.Codes.DBError, "There is something wrong with the DB");
@@ -134,11 +134,23 @@ namespace enti_api.Controllers
         // PUT: api/Order/5
         // Update of order status
         [BasicAuthenticationAttribute]
-        public void Put(int id, bool isCompleted)
+        public Models.ReturnValue<string> Put([FromUri]bool isCompleted, [FromBody]Models.OrderDetails order)
         {
             using (var db = new EntiTreesEntities())
             {
-                db.UpdateOrder(id, isCompleted);
+                try
+                {
+                    db.UpdateOrder(order.orderId, isCompleted);
+                    if (isCompleted)
+                    {
+                        Utils.SendMail("ИЗПРАТЕНА ПОРЪЧКА #" + order.orderId.ToString() + ": Вашата поръчка пътува към вас!", GenerateOrderSendEmailBody(order), order.customer.email, order.customer.name);
+                    }
+                    return new Models.ReturnValue<string>(Models.Codes.OK, "Order send successfully");
+                }
+                catch (Exception ex)
+                {
+                    return new Models.ReturnValue<string>(Models.Codes.Error, ex.Message);
+                }
             }
         }
 
@@ -180,6 +192,64 @@ namespace enti_api.Controllers
 
                 body += "<tr><td>" + order.shoppingCart[i].item.title + "</td><td style=\"text-align: right;\">" + 
                     order.shoppingCart[i].quantity + "</td><td style=\"text-align: right;\">" +
+                    itemPrice.Value.ToString() +
+                    " лв. </td></tr>";
+                total += itemPrice;
+            }
+            string contactsUrl = System.Web.Configuration.WebConfigurationManager.AppSettings.Get("entiTreesUrl") + "contacts";
+
+            body += @"<tfoot><tr><td colspan=""3""><hr style=""border-top: 1px solid #eee;""></td></tr>
+                        <tr style=""border-top: 1px solid #eee""><td colspan=""2"">Обща цена на поръчката:</td><td style=""text-align: right;"">" +
+                            total.ToString() +
+                        @" лв. </td></tr>
+                      </tfoot>
+                      </tbody>
+                      </table>
+                      <br/><br/>
+                    Детайли за доставката можете да откриете на страницата <a href=""" + contactsUrl + @""">Контакти</a> на нашия сайт.
+                    <br/> Благодарим Ви, че избрахте нас!
+                    </body>
+                    </html>";
+            return body;
+        }
+
+        /// <summary>
+        /// Generates the body of the email when the order is submitted to the user and is marked as completed
+        /// </summary>
+        /// <param name="order"><The details of the order/param>
+        /// <returns></returns>
+        private string GenerateOrderSendEmailBody(Models.OrderDetails order)
+        {
+            //TODO: add item images and ENTI LOGO
+            string body = @"<!DOCTYPE html>
+                            <html xmlns=""http://www.w3.org/1999/xhtml"">
+                            <head>
+                                <meta http-equiv=""Content-Type"" content=""text/html; charset=UTF-8"" />
+                                <title>Изпратена поръчка от Enti Tree Bonsai</title>
+                                <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"" />
+                            </head>
+                            </body>" +
+                    "Здравейте, " + order.customer.name + "!<br/><br/>" +
+                    "Вашата поръчка #" + order.orderId + " е изпратена успешно и пътува към вас.<br/>" +
+                    "Адрес на доставка: " + order.customer.address +
+                    "<br/><br/><h3> Детайли за поръчката: </h3><br/>";
+            body += @"<table style=""width:100%;border-spacing:0;border: 1px solid #eee;border-radius: 10px;padding: 5px;line-height: 20px;"">
+                        <thead>
+                            <tr style=""background-color: #eee;"">
+                               <th style=""text-align: left; padding: 5px;"">Продукт </th>
+                               <th style=""text-align: right; padding: 5px;"">Количество </th>
+                               <th style=""text-align: right; padding: 5px;"">Цена </th>
+                            </tr>
+                        </thead>
+                        <tbody>";
+            double? total = 0;
+            double? itemPrice = 0;
+            for (int i = 0; i < order.items.Count; i++)
+            {
+                itemPrice = (order.items[i].itemPrice * order.items[i].quantity);
+
+                body += "<tr><td>" + order.items[i].title + "</td><td style=\"text-align: right;\">" +
+                    order.items[i].quantity + "</td><td style=\"text-align: right;\">" +
                     itemPrice.Value.ToString() +
                     " лв. </td></tr>";
                 total += itemPrice;
